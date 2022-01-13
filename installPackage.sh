@@ -1,0 +1,1 @@
+sudo pacman -Suy texlive-core texlive-bin texlive-latexextra biber texlive-bibtexextra python-pygments

@@ -1,0 +1,71 @@
+# LaTex
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex*
+*.pdfsync
+
+## Auxiliary and intermediate files from other packages:
+
+### Algorithms
+*.alg
+*.loa
+
+### Beamer
+*.nav
+*.pre
+*.snm
+*.vrb
+
+### Glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.lzo
+*.lzs
+
+### Glossaries Extra
+*.ist
+
+### Minted
+_minted*
+*.pyg
+
+### Makeidx
+*.idx
+*.ilg
+*.ind
+
+## Generated PDF
+*.pdf
+
+
+# IDE settings
+
+## VSCode
+.vscode/
