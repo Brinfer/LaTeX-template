@@ -1,0 +1,412 @@
+%-----------------------------------------------------------------
+% LaTeX template for a internship report front page
+% Written By: Pierre-Louis GAUTIER
+% Date Updated: January 05, 2022 (v1.2.5)
+%-----------------------------------------------------------------
+
+\ProvidesPackage{Parameter}
+\RequirePackage{kvoptions}
+
+\DeclareStringOption[]{imageHeaderLeft}[]
+\DeclareStringOption[]{imageHeaderRight}[]
+\DeclareStringOption[]{subject}[]
+\DeclareStringOption[]{keywords}[]
+\DeclareStringOption[utf8]{encoding}[]
+\DeclareStringOption[french]{language}[]
+\DeclareBoolOption[false]{showunnemberred}
+
+\ProcessKeyvalOptions*
+
+% ---------------------------------------------------------------------------------------
+%
+% Classic package
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage{ae}
+\usepackage{lmodern} % Vector font loads which fontenc does not allow, to load before this one
+
+\usepackage[\Parameter@language]{babel} % Use french dictionary
+
+\usepackage[\Parameter@encoding]{inputenc} % source file encoding is in UTF8
+\usepackage[T1]{fontenc} % Allows to load hyphenation rules for accented words
+
+\usepackage{graphicx}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\usepackage{tabularx}
+\usepackage{multirow}
+
+\usepackage[table]{xcolor}
+
+% ---------------------------------------------------------------------------------------
+%
+% Define general variable
+%
+% ---------------------------------------------------------------------------------------
+
+\definecolor{citation}{rgb}{0.77,0.89,0.52}
+
+% ESEO Color overload the default color
+\definecolor{eseoRed}{rgb}{0.59,0.13,0.32}
+\definecolor{eseoOrange}{rgb}{0.91,0.29,0.15}
+\definecolor{eseoDarkBlue}{rgb}{0.11,0.46,0.74}
+\definecolor{eseoLightBlue}{rgb}{0.41,0.78,0.87}
+\definecolor{eseoGrey}{rgb}{0.35,0.35,0.35}
+\definecolor{eseoWhite}{rgb}{1.00,1.00,1.00}
+\definecolor{ikosBlue}{HTML}{1783b1}
+
+% Overload default color
+\colorlet{red}{eseoRed}
+\colorlet{orange}{eseoOrange}
+\colorlet{darkblue}{eseoDarkBlue}
+\colorlet{lightblue}{eseoLightBlue}
+\colorlet{grey}{eseoGrey}
+\colorlet{white}{eseoWhite}
+
+% Section color
+\colorlet{partColor}{ikosBlue}
+\colorlet{sectionColor}{ikosBlue}
+\colorlet{subSectionColor}{ikosBlue}
+\colorlet{subSubSectionColor}{ikosBlue}
+\colorlet{paragraphColor}{ikosBlue}
+\colorlet{subparagraphColor}{ikosBlue}
+
+% Fancy color
+% \colorlet{headRuleColor}{black}
+
+% ---------------------------------------------------------------------------------------
+%
+% Footer and Header personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage{lastpage} % Reference the number of pages
+\usepackage{fancyhdr} % Customize the footer and header page
+
+\makeatletter
+
+\pagestyle{fancy}
+\fancyhf{}
+\chead{\rightmark} % Current section without number, to have the number set to leftmark
+
+\setlength{\headheight}{35pt}
+
+\ifx\Parameter@imageHeaderLeft\empty
+\else
+    \lhead{\includegraphics[height=30pt]{\Parameter@imageHeaderLeft}}
+\fi
+
+\ifx\Parameter@imageHeaderRight\empty
+\else
+    \rhead{\includegraphics[height=30pt]{\Parameter@imageHeaderRight}}
+\fi
+
+\lfoot{\@author}
+\cfoot{\@date}
+\rfoot{page \thepage / \pageref*{LastPage}}
+
+\renewcommand{\headrulewidth}{1pt} % Rule for line under header, set at 0 for hide it
+% \renewcommand{\headrule}{\hbox to\headwidth{\color{headRuleColor}\leaders\hrule height \headrulewidth\hfill}} % Change the color of the header rule
+\renewcommand{\footrulewidth}{0pt} % Rule for line under footer, set at 0 for hide it
+
+\makeatother
+
+% ---------------------------------------------------------------------------------------
+%
+% Hyperref personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage{hyperref} % handle cross-referencing commands to produce hypertext links in the document
+
+\hypersetup{
+    colorlinks  = true,
+    linkcolor   = black,
+    filecolor   = red,
+    urlcolor    = blue
+}
+
+\makeatletter
+\AtBeginDocument{   % Execute it automatically after \begin{document} to handle title and author value
+    \hypersetup{
+        pdfauthor   = \@author,
+        pdftitle    = \@title,
+        pdfsubject  = \Parameter@subject,
+        pdfkeywords = \Parameter@keywords
+    }
+}
+\makeatother
+
+% ---------------------------------------------------------------------------------------
+%
+% Bibliography personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage[backend=biber,
+            citestyle=authoryear,
+            style=authoryear,
+            sorting=nty
+            ]{biblatex}
+
+% ---------------------------------------------------------------------------------------
+%
+% Glossaries personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage[nonumberlist,
+            toc = true,
+            acronym,
+            ]{glossaries-extra} % To make a glossary
+
+\glsenablehyper
+\setglossarystyle{altlisthypergroup}
+\setabbreviationstyle{short-postfootnote}
+
+\ProvideDocumentCommand{\printglossdef}{o m}{\footnote{#1: #2}}
+\GlsXtrEnableEntryUnitCounting{general}{0}{page} % Count number of occurrence by unit, by page of the group general
+\GlsXtrEnableEntryUnitCounting{abbreviation}{0}{page} % Count number of occurrence by unit, by page of the group abbrevation
+
+% If it first occurence of the label
+%   then a foot note is added with the description linked to the label
+% else do nothing
+\renewcommand{\glsxtrpostlink}{%
+    \glsxtrifwasfirstuse%
+        {\printglossdef[\glsentryname{\glslabel}]{\glsentrydesc{\glslabel}}}%
+        {}%
+}
+
+% If it first occurence of the label
+%   then suppress the hyperlink to the glossary
+% else
+%   if it's there is already occurence of the label in the page (see GlsXtrEnableEntryUnitCounting)
+%       then suppress the hyperlink
+%   else do nothing
+\renewcommand{\glslinkcheckfirsthyperhook}{%
+\glsxtrifwasfirstuse%
+    {\setkeys{glslink}{hyper=false}}%
+    {%
+        \ifnum\glsentrycurrcount\glslabel>0%
+            \setkeys{glslink}{hyper=false}%
+        \fi
+    }%
+}
+
+% ---------------------------------------------------------------------------------------
+%
+% Section title personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage{titlesec}
+
+% \newcommand{\sectionbreak}{\newpage} % New page for each new section
+
+% \renewcommand{\thesection}{\Roman{section}}       % Use roman number for the section
+% \renewcommand{\thesubsection}{\Alph{subsection}}  % Use letter for the subsection
+
+\setcounter{tocdepth}{5} % Allow subparagraph in table of content
+\setcounter{secnumdepth}{5} % Allow numbering the subparagraph
+
+\titleformat{\part}% command
+    [block]% shape
+    {\LARGE\bfseries\hspace{0em}\color{partColor}}% format
+    {\thepart}% label
+    {1em}% sep
+    {\LARGE}% before-code
+    []% after-code
+
+\titleformat{\section}[block]{\LARGE\bfseries\hspace{1em}\color{sectionColor}}{\thesection}{1em}{\LARGE\bfseries}
+\titleformat{\subsection}[block]{\Large\bfseries\hspace{2em}\color{subSectionColor}}{\thesubsection}{1em}{\Large\bfseries}
+\titleformat{\subsubsection}[block]{\large\bfseries\hspace{3em}\color{subSubSectionColor}}{\thesubsubsection}{1em}{\large\bfseries}
+\titleformat{\paragraph}[block]{\normalsize\hspace{4em}\color{paragraphColor}}{\theparagraph}{1em}{\normalsize}
+\titleformat{\subparagraph}[block]{\normalsize\hspace{5em}\color{subparagraphColor}}{\thesubparagraph}{1em}{\normalsize}
+
+\makeatletter
+
+\@addtoreset{section}{part} % Restart section numberring when a new part start
+
+\ifParameter@showunnemberred
+
+\newcounter{@secnumdepth}
+
+\let\oldpartB\part
+\RenewDocumentCommand{\part}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldpartB{#3}% \part*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \part
+                {% \part[.]{..}
+                    \oldpartB[#2]{#3}%
+                }
+                {% \part{..}
+                    \oldpartB{#3}%
+                }
+        }
+}
+
+\let\oldsection\section
+\RenewDocumentCommand{\section}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldsection{#3}% \section*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \section
+                {% \section[.]{..}
+                    \oldsection[#2]{#3}%
+                }
+                {% \section{..}
+                    \oldsection{#3}%
+                }
+        }
+}
+
+\let\oldsubsection\subsection
+\RenewDocumentCommand{\subsection}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldsubsection{#3}% \subsection*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \subsection
+                {% \subsection[.]{..}
+                    \oldsubsection[#2]{#3}%
+                }
+                {% \subsection{..}
+                    \oldsubsection{#3}%
+                }
+        }
+}
+
+\let\oldsubsubsection\subsubsection
+\RenewDocumentCommand{\subsubsection}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldsubsubsection{#3}% \subsubsection*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \subsubsection
+                {% \subsubsection[.]{..}
+                    \oldsubsubsection[#2]{#3}%
+                }
+                {% \subsubsection{..}
+                    \oldsubsubsection{#3}%
+                }
+        }
+}
+
+\let\oldparagraph\paragraph
+\RenewDocumentCommand{\paragraph}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldparagraph{#3}% \paragraph*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \paragraph
+                {% \paragraph[.]{..}
+                    \oldparagraph[#2]{#3}%
+                }
+                {% \paragraph{..}
+                    \oldparagraph{#3}%
+                }
+        }
+}
+
+\let\oldsubparagraph\subparagraph
+\RenewDocumentCommand{\subparagraph}{s o m}{%
+    \IfBooleanTF{#1}
+        {%
+            \setcounter{@secnumdepth}{\value{secnumdepth}}% Store secnumdepth
+            \setcounter{secnumdepth}{-1}% Print only up to \part numbers
+            \phantomsection%
+            \oldsubparagraph{#3}% \subparagraph*
+            \setcounter{secnumdepth}{\value{@secnumdepth}}% Restore secnumdepth
+        }
+        {%
+            \IfValueTF{#2}% \subparagraph
+                {% \subparagraph[.]{..}
+                    \oldsubparagraph[#2]{#3}%
+                }
+                {% \subparagraph{..}
+                    \oldsubparagraph{#3}%
+                }
+        }
+}
+\fi
+
+\makeatother
+
+% ---------------------------------------------------------------------------------------
+%
+% Text format and font personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\setlength{\parindent}{0pt} % Size of the indent when start a new paragraph
+\renewcommand{\familydefault}{\sfdefault} % Use the font sans-sherrif
+
+% ---------------------------------------------------------------------------------------
+%
+% List personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage{enumitem} % Control layout of itemize, enumerate, description
+
+\setlist[itemize]{label=\textcolor{black}{•}} % The label of the list is by default a bullet
+
+% ---------------------------------------------------------------------------------------
+%
+% Minted personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage[outputdir=build]{minted}
+
+\usemintedstyle{perldoc}
+%\definecolor{monokaibg}{HTML}{272822}
+%\usemintedstyle{monokai} % Need a dark background.
+\setminted{
+    % bgcolor=monokaibg,  % backgroung color, really printer unfriendly.
+    frame=lines,  % Line section before and after the code
+    framesep=4mm, % 4mm before and after the line
+    autogobble=true,  % Aling first indent with the marge
+    numbers=left,  % Line number
+    fontsize=\scriptsize  % Font size
+}
+
+% ---------------------------------------------------------------------------------------
+%
+% Quote personalization
+%
+% ---------------------------------------------------------------------------------------
+
+\usepackage[autostyle=true]{csquotes}
+
+\let\oldenquote\enquote
+\renewcommand{\enquote}[1]{\textcolor{citation}{\oldenquote{\textit{#1}}}}

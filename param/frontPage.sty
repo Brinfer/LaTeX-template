@@ -1,0 +1,88 @@
+%-----------------------------------------------------------------
+% LaTeX template for a document
+% Written By: Pierre-Louis GAUTIER
+% Date Updated: September 24, 2021 (v1.2.2)
+%-----------------------------------------------------------------
+
+\ProvidesPackage{FrontPage}
+\RequirePackage{kvoptions}
+\RequirePackage{Parameter}
+
+\DeclareStringOption[]{logoRight}[]
+\DeclareStringOption[]{nameCompany}[]
+\DeclareStringOption[]{logoLeft}[]
+\DeclareStringOption[]{nameSchool}[]
+\DeclareStringOption[]{logoCenter}[]
+\DeclareStringOption[]{logoBottom}[]
+
+\ProcessKeyvalOptions*
+
+\fancypagestyle{} % No header and footer for this page
+{
+    \fancyhf{}
+    \fancyrf{}
+}
+
+\makeatletter
+
+\renewcommand\maketitle{
+    \thispagestyle{empty}
+
+    \ifx\FrontPage@logoCenter\empty
+        \ifx\FrontPage@logoLeft\empty
+        \else
+            \begin{minipage}{.49\textwidth}
+                \centering
+                \begin{flushleft}
+                    \includegraphics[width=0.7\textwidth]{\FrontPage@logoLeft}
+                \end{flushleft}
+            \end{minipage}
+        \fi
+        \ifx\FrontPage@logoRight\empty
+        \else
+            \begin{minipage}{.49\textwidth}
+                \centering
+                \begin{flushright}
+                    \hspace*{1cm} \includegraphics[width=0.7\textwidth]{\FrontPage@logoRight}
+                \end{flushright}
+            \end{minipage}\\[1.5cm]
+        \fi
+    \else
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.3\textwidth]{\FrontPage@logoCenter}
+        \end{figure}
+    \fi
+
+    \begin{center}
+        \rule{\linewidth}{0.5mm}\\[0.4cm]
+        \begin{center}
+            \huge
+            \textbf{\@title}\\
+        \end{center}
+        \rule{\linewidth}{0.5mm}\\[0.4cm]
+    \end{center}
+
+    \ifx\FrontPage@nameCompany\empty
+    \else
+        \begin{center}\large
+            \textsc{\FrontPage@nameCompany}\\
+        \end{center}
+    \fi
+    \ifx\FrontPage@nameSchool\empty
+    \else
+        \begin{center}\large
+            \textsc{\FrontPage@nameSchool}\\
+        \end{center}
+    \fi
+
+    \ifx\FrontPage@logoBottom\empty
+    \else
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.3\textwidth]{\FrontPage@logoBottom}
+        \end{figure}
+    \fi
+}
+
+\makeatother

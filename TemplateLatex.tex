@@ -1,0 +1,248 @@
+%-----------------------------------------------------------------
+% LaTeX template for a document
+% Written By: Pierre-Louis GAUTIER
+% Date Updated: August 21, 2021 (v1.2.1)
+%-----------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article}
+
+% NOTE To conserve the space in the sentence passed as option to the package double braces to protect the spaces.
+% It's an unfortunate feature of the core latex option handling
+
+\usepackage[imageHeaderLeft     =   {figures/logo/logoCompany.png},
+            subject             =   {{Subject of the document, here it is an exemple, displayed in the metadata of the document}},
+            keywords            =   {{Example, Pierre-Louis, GAUTIER}},
+            encoding            =   {utf8},
+            language            =   {english},
+            showunnemberred     =   true
+            ]{Parameter}
+
+\usepackage[logoCenter      =   {figures/logo/logoCompany.png},
+            logoBottom      =   {figures/logo/logoLatex.png},
+            nameCompany     =   {{Company Name}}
+            ]{FrontPage}
+
+\usepackage{lipsum} % TODO generate fake text, remove it
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% General config for header, footer and front page %%
+
+\author{Pierre-Louis GAUTIER}
+\title{Title}
+\date{\normalsize\today} % Enter a custom date or let it, it's the current date
+
+%% Load the glossary from the given files %%
+
+\newignoredglossary{ignored}
+
+\makeglossaries
+\loadglsentries{glossary.tex}
+\loadglsentries[ignored]{glossary-ignored.tex}
+\loadglsentries{abbreviation.tex}
+
+%% Load the bibliography from the given files %%
+
+\addbibresource{biblio.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\newpage
+\pagenumbering{arabic} % restart the page numbering
+\tableofcontents
+
+\newpage
+\part{Presentation}
+This document is a simple and quite general template for \gls{latex} document.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=5cm]{figures/logo/logoLatex.png}
+    \caption{\glsentrytext{latex} project logo}
+    \label{fig:latexProject}
+\end{figure}
+
+\section{Package used}
+
+\begin{itemize}
+    \item \href{https://www.ctan.org/pkg/ae}{ae} A set of virtual fonts which emulates T1 coded fonts using the standard CM fonts.
+    \item \href{https://www.ctan.org/pkg/babel}{babel} This package manages culturally-determined typographical (and other) rules
+          or a wide range of languages.
+    \item \href{https://www.ctan.org/pkg/biblatex}{biblatex} A complete reimplementation of the bibliographic facilities provided by \gls{latex}.
+    \item \href{https://www.ctan.org/pkg/biblatex}{biblatex} A complete reimplementation of the bibliographic facilities provided by \gls{latex}.
+    \item \href{https://www.ctan.org/pkg/csquotes}{csquotes} This package provides advanced facilities for inline and display quotations.
+    \item \href{https://www.ctan.org/pkg/fancyhdr}{fancyhdr} The package provides extensive facilities, both for constructing headers
+          and footers, and for controlling their use.
+    \item \href{https://www.ctan.org/pkg/geometry}{geometry} The package provides an easy and flexible user interface to customize
+          page layout, implementing auto-centering and auto-balancing mechanisms.
+    \item \href{https://www.ctan.org/pkg/glossaries}{\glsentrytext{gls}} This package provides improvements and extra features
+          to the glossaries package.
+    \item \href{https://www.ctan.org/pkg/graphicx}{graphicx} The package builds upon the graphics package, providing a key-value
+          interface for optional arguments to the \verb=\includegraphics= command.
+    \item \href{https://www.ctan.org/pkg/hyperref}{hyperref} The \textbf{hyperref} package is used to handle cross-referencing commands in
+          \gls{latex} to produce hypertext links in the document.
+    \item \href{https://www.ctan.org/pkg/kvoptions}{kvoption} This package offers support for package authors who want to use options
+          in key-value format for their package options.
+    \item \href{https://www.ctan.org/pkg/lastpage}{lastpage} Reference the number of pages in your \gls{latex} document through the
+          introduction of a new label.
+    \item \href{https://www.ctan.org/tex-archive/info/lmodern}{lmodern} Provide some symbol.
+    \item \href{https://www.ctan.org/pkg/minted}{minted} The package that facilitates expressive syntax highlighting in \gls{latex}.
+    \item \href{https://www.ctan.org/pkg/multirow}{multirow} The package has a lot of flexibility, including an option for specifying
+          an entry at the “natural” width of its text.
+    \item \href{https://www.ctan.org/pkg/tabularx}{tabularx} The package defines an environment \textbf{tabularx}, an extension of
+          \textbf{tabular} which has an additional column designator, X, which creates a paragraph-like column whose width automatically
+          expands so that the declared width of the environment is filled.
+    \item \href{https://www.ctan.org/pkg/titlesec}{titlesec} A package providing an interface to sectioning commands for selection
+          from various title styles.
+    \item \href{https://www.ctan.org/pkg/xcolor}{xcolor} The package starts from the basic facilities of the \textbf{color} package,
+          and provides easy driver-independent access.
+\end{itemize}
+
+\subsection{babel}
+
+You can change the language of \textbf{babel} using the \textit{language} option of the \textbf{\gls{parameter}} package. By default, it
+is \textit{french}.
+
+\subsection{biblatex}
+
+TODO
+
+\subsection{csquote}
+
+TODO
+
+\subsection{fancyhdr}
+
+You can choose the image to add in the header by using the \textit{imageHeader} option of the \textbf{\gls{parameter}} package.
+By default, there is no image.
+
+\subsection{\glsentryname{gls}}
+
+A very practical and customizable package. Refer to the internet to learn more.\newline
+
+Some tutorial:
+\begin{itemize}
+    \item \href{https://www.dickimaw-books.com/latex/thesis/html/makeglossaries.html}{Dickimaw Books}
+    \item \href{https://www.resurchify.com/latex_tutorial/latex_glossaries.php}{Resurchify}
+    \item \href{https://fr.overleaf.com/learn/latex/Glossaries}{Overleaf}
+\end{itemize}
+
+In case a glossary entry is used for the first time, then a footnote is added giving the description of the entry,
+moreover, the hyperlink of this entry is removed.
+Each new call of the same glossary entry in the same page will have its hyperlink removed.\newline
+
+In summary, calling a glossary entry for the first time adds a footnote, and prevents any hyperlink from being
+added to that entry. If calls to that entry are made to other pages, then only the first call to that entry has a hyperlink.\newline
+
+It is also possible to have entries that are not displayed in the glossary, that will never have a hyperlink.
+You just have to specify that the type of the entry is \textit{ignored} or put it in the \underline{glossary-ignored.tex} file.
+This input can therefore be used as a variable, but with the full support of \gls{gls}.
+
+\subsection{hyperref}
+
+The metadata of the PDF are modified with this package, the name of the author, the title of the document given
+by the \verb=\title= and \verb=\author= commands are added by default. You can add keywords and specify the subject using
+\textit{keywords} and \textit{subject} option of the \textbf{\gls{parameter}} package. By default, it is empty.
+
+\subsection{inputenc}
+
+You can specify the encoding of your source files to \textbf{inputc} using the \textit{encoding} option of the \textbf{\gls{parameter}}
+package. By default, it is \textit{utf8}.
+
+\subsection{titlesec}
+
+Customize the name of the sections, and add the \verb=\subparagraph= command to have more possibilities. The table of contents
+will also display it.\newline
+
+The color of the sections can be recovered with the commands \verb=\color= or \verb=\textcolor= :
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|ccccc|}
+        \hline
+        \textcolor{sectionColor}{sectionColor}
+         & \textcolor{subSectionColor}{subSectionColor}
+         & \textcolor{subSubSectionColor}{subSubSectionColor}
+         & \textcolor{paragraphColor}{paragraphColor}
+         & \textcolor{subparagraphColor}{subparagraphColor}
+        \tabularnewline
+        \hline
+    \end{tabular}
+    \caption{The color of the sections}
+    \label{ta:sectionColors}
+\end{table}
+
+\subsection{Minted}
+
+\subsubsection{Python}
+\begin{minted}{Python}
+    for i in range(10):
+        print("Hello World")
+\end{minted}
+
+\subsubsection{C}
+\begin{minted}{C}
+    for(int i = 0; i < 10; i++) {
+        println("Hello World\n");
+    }
+\end{minted}
+
+\subsubsection{Java}
+\begin{minted}{Java}
+    class HelloWorld {
+        public static void main(String[] args) {
+            System.out.println("Hello, World!");
+        }
+    }
+\end{minted}
+
+\section{Available option}
+
+\section{To-do}
+
+\begin{itemize}
+    \item Hide the Content section in the Table of content when \textit{showunnemberred} option is set at \verb=true=.
+    \item Start a \textbf{part} on a new page when use the command \verb=\part=.
+    \item Set up the bibliography.
+    \item Be able to past the table of figure and the table of table (and the glossary in same time) as \textbf{subsection} if
+          the user want it.
+    \item Use \textbf{minted} or \textbf{listing} to highlight code block and inline code.
+    \item Use acronym with \textbf{glossaries} package.
+    \item Set the label of the list in function of the level.
+\end{itemize}
+
+
+\clearpage
+\part*{Part}
+\lipsum[1-3]
+\section*{Section}
+\lipsum[4-6]
+Just a sentence to call an entry in the glossaries: \gls{random1}.
+\subsection*{Subsection}
+\lipsum[7-8]
+Just a sentence to call two entries in the glossaries: \gls{random2} and \gls{random3}.
+\subsubsection*{Subsubsection}
+\lipsum[9]
+\paragraph*{Paragraph}
+\lipsum[10]
+Just a sentence to call four entries in the glossaries: \gls{random1}, \gls{random2}, \gls{random3} and \gls{random4}.\newline
+I recall \gls{random1}, \gls{random2} and \gls{random4}.\newline
+If you check in the \textit{glossary.tex} only the called entry will appear in the \textbf{Glossary} section.
+\subparagraph*{Subparagraph}
+\lipsum[11]
+
+\clearpage
+\part*{Annex}
+\listoffigures
+\listoftables
+
+\clearpage
+\printglossary % Display the glossary, see the documentation for the options
+
+\clearpage
+\printbibliography
+
+\end{document}
