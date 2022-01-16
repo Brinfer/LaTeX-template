@@ -1,0 +1,27 @@
+name: LaTeX release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      - name: Build PDF
+        uses: xu-cheng/texlive-action/full@v1 # https://github.com/xu-cheng/texlive-action
+        with:
+          run: latexmk -verbose
+
+      - name: Create release
+        uses: svenstaro/upload-release-action@v2 # https://github.com/svenstaro/upload-release-action
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: output/TemplateLatex.pdf # Add the file to the asset of the release
+          asset_name: TemplateLaTeX-$tag.pdf
+          tag: ${{ github.ref }}
+          overwrite: true
