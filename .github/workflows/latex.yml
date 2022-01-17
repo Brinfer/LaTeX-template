@@ -26,13 +26,14 @@ jobs:
             latexmk -verbose
             echo github.event_name
 
-      # Create a release that contains the generated PDF, named according to the name of the t
+      # Create a release that contains the generated PDF, named according to the name of the tag
+      # The release is created only if the trigger is a pushed tag
       - name: Create release
         uses: svenstaro/upload-release-action@v2 # https://github.com/svenstaro/upload-release-action
-        if: ${{ success() }} && !contains(github.event_name, "push") # if successs and it's not a push
+        if: startsWith(github.ref, 'refs/tags/') # if success and it's pushed tag
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: output/TemplateLatex.pdf # Add the file to the asset of the release
-          asset_name: TemplateLaTeX-$tag.pdf
+          file: output/**/*
+          file_glob: true
           tag: ${{ github.ref }}
-          overwrite: true
+
