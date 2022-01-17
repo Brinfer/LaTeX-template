@@ -1,5 +1,9 @@
 # __LaTeX__ template
 
+![license](https://img.shields.io/github/license/Brinfer/LaTeX-template)
+![release](https://img.shields.io/github/v/release/Brinfer/LaTeX-template?display_name=tag)
+[![LaTeX](https://github.com/Brinfer/LaTeX-template/actions/workflows/latex.yml/badge.svg)](https://github.com/Brinfer/LaTeX-template/actions/workflows/latex.yml)
+
 ## Description
 
 ![logo](figures/logo/logo_small.png)
