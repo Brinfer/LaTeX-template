@@ -1,4 +1,4 @@
-name: LaTeX release
+name: LaTeX build
 
 on:
   push:
