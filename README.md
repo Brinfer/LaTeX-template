@@ -29,3 +29,76 @@ Some packages are required to use the template:
 
 For more details on the packages used, please refer to the [Wiki](https://github.com/Brinfer/LaTeX-template/wiki)
 
+### Minimal Example
+
+```latex
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[imageHeaderLeft     =   {figures/logo/logo_small_icon_only_color.png},
+            subject             =   {{Subject of the document, here it is an example, displayed in the metadata of the document}},
+            keywords            =   {{Example, Brinfer}},
+            encoding            =   {utf8},
+            language            =   {english},
+            showunnemberred     =   true
+            ]{Parameter}
+
+\usepackage[logoCenter      =   {figures/logo/logoLatex.png},
+            logoBottom      =   {figures/logo/logo_large.png},
+            nameCompany     =   {{}}
+            ]{FrontPage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% General config for header, footer and front page %%
+
+\author{Brinfer}
+\title{Minimal Example}
+\date{\normalsize\today} % Enter a custom date or let it, it's the current date
+
+%% Load the glossary from the given files %%
+
+\newignoredglossary{ignored}
+
+\makeglossaries
+\loadglsentries{glossary.tex}
+\loadglsentries[ignored]{glossary-ignored.tex}
+\loadglsentries{abbreviation.tex}
+
+%% Load the bibliography from the given files %%
+
+\addbibresource{biblio.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\part{Part}
+Some text
+
+\section{Section}
+Some text
+
+\subsection{Subsection}
+Some text
+
+\subsubsection{Subsubsection}
+Some text
+
+\paragraph{Paragraph}
+Some text
+
+\subparagraph{Subparagraph}
+Some text
+
+\clearpage
+\part*{Annex}
+\listoffigures
+\listoftables
+
+\clearpage
+\printglossary
+
+\clearpage
+\printbibliography
+
+\end{document}
+```
