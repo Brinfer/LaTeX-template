@@ -14,3 +14,18 @@ The template is composed of:
 
 For more details about the possible options, please refer to the [Wiki](https://github.com/Brinfer/LaTeX-template/wiki)
 
+## Getting started
+
+### Installation
+
+Some packages are required to use the template:
+
+- __texlive-core__ contains the LaTeX compiler and its basic dependencies.
+- [__latexmk__](https://www.ctan.org/pkg/latexmk/) provides the `latexmk` command, optional if you want to generate the PDF otherwise.
+- __texlive-bibtexextra__ contains additional __BibTeX__ and [__BibLaTeX__](https://ctan.org/pkg/biblatex) styles and bibliography databases.
+- __texlive-font-utils__ programs for conversion between font formats, testing fonts, virtual fonts...
+- __texlive-lang-french__ support for French and Basque, optional if you do not intend to write in these languages.
+- __texlive-latex-extra__ __LaTeX__ additional packages
+
+For more details on the packages used, please refer to the [Wiki](https://github.com/Brinfer/LaTeX-template/wiki)
+
