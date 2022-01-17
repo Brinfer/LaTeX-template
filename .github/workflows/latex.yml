@@ -5,14 +5,14 @@ on:
     tags:
       - "*"
   pull_request:
-    branches:
-      - dev
     types:
       - opened
-      - edited
+      - reopened
+      - review_requested
+      - ready_for_review
 
 jobs:
-  create_release:
+  latex_build_and_save:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
@@ -22,18 +22,25 @@ jobs:
       - name: Build PDF
         uses: xu-cheng/texlive-action/full@v1 # https://github.com/xu-cheng/texlive-action
         with:
-          run: |
-            latexmk -verbose
-            echo github.event_name
+          run: latexmk -verbose
+
+      # Create an artifact that contains the output folder
+      - name: Archive output folder
+        if: github.event_name != 'push' # it's not a push
+        uses: actions/upload-artifact@v2 # https://github.com/actions/upload-artifact
+        with:
+          name: output
+          path: output/*
+          retention-days: 7
 
       # Create a release that contains the generated PDF, named according to the name of the tag
       # The release is created only if the trigger is a pushed tag
       - name: Create release
+        if: startsWith(github.ref, 'refs/tags/') # it's a pushed tag
         uses: svenstaro/upload-release-action@v2 # https://github.com/svenstaro/upload-release-action
-        if: startsWith(github.ref, 'refs/tags/') # if success and it's pushed tag
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: output/**/*
+          file: output/*
           file_glob: true
           tag: ${{ github.ref }}
 
