@@ -7,10 +7,10 @@ assignees: Brinfer
 
 ---
 
-## Describe the bug
+**Describe the bug**
 A clear and concise description of what the bug is.
 
-## To Reproduce
+**To Reproduce**
 Provide a minimal example:
 
 ```latex
@@ -21,11 +21,11 @@ Provide a minimal example:
 \end{document}
 ```
 
-## Expected behavior
+**Expected behaviour**
 A clear and concise description of what you expected to happen.
 
-## Log
+**Log**
 If applicable, add some log to help explain your problem.
 
-## Additional context
+**Additional context**
 Add any other context about the problem here.
