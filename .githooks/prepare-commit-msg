@@ -35,7 +35,7 @@ ERROR_MESSAGE = """
 The commit does not respect the patterns.
 ----------------------------------------------------------------------------
 The Pattern is:
-\t\t[commitType]: text of the commit [#issueNumber]
+\t\ttext of the commit (#issueNumber)
 ----------------------------------------------------------------------------
 Your commit message is:
 \t\t{0}
