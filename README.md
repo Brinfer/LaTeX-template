@@ -21,7 +21,7 @@ The template is composed of:
 - _frontPage.sty_ file providing a cover page, by overriding the `\maketitle` command in the __LaTeX__ document. This one can be customized by passing different options during their import
 - _latexmkrc_ file automating the PDF generation. The PDF file is generated in the _output_ folder, the auxiliary files, produced during the construction of the PDF are in the _build_ folder, and can be deleted without problem.
 
-For more details about the possible options, please refer to the [Wiki](https://github.com/Brinfer/LaTeX-template/wiki)
+For more details about the possible options, please refer to the [documentation in the template](https://github.com/Brinfer/LaTeX-template/releases/latest/download/TemplateLatex.pdf)
 
 ## Getting started
 
@@ -36,7 +36,7 @@ Some packages are required to use the template:
 - __texlive-lang-french__ support for French and Basque, optional if you do not intend to write in these languages.
 - __texlive-latex-extra__ __LaTeX__ additional packages
 
-For more details on the packages used, please refer to the [Wiki](https://github.com/Brinfer/LaTeX-template/wiki)
+For more details on the packages used, please refer to the [documentation in the template](https://github.com/Brinfer/LaTeX-template/releases/latest/download/TemplateLatex.pdf)
 
 ### Minimal Example
 
