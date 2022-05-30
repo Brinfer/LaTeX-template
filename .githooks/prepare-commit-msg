@@ -137,7 +137,7 @@ def commit_validation():
     """
     message = get_commit_msg()
 
-    if (is_exception(message)) and check_issue_id(message):
+    if (is_exception(message)) or (check_issue_id(message)):
         exit(0)
     else:
         print(ERROR_MESSAGE.format(message, error_detail))
