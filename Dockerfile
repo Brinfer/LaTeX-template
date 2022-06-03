@@ -12,6 +12,7 @@ LABEL desc="Docker image to build PDF file with LaTeX, used for my intershipment
 # Install needed package
 RUN apt update
 RUN apt install --assume-yes\
+    git\
     texlive-latex-recommended\
     texlive-latex-extra\
     texlive-bibtex-extra\
