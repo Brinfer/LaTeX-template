@@ -1,0 +1,51 @@
+name: Docker Build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - closed
+      - review_requested
+      - ready_for_review
+    paths:
+      - "Dockerfile"
+  schedule:
+      - cron: "* * 1 */6 *" # Execute every 6 month at the 1
+
+env:
+  IMAGE_NAME: debian-texlive
+
+jobs:
+  docker_login_build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      # Had the variable "CURRENT_DATE" in the GitHub environnement to re-use it later
+      # Had the repo name in lower case in the GitHub environnement to re-use it later
+      - name: Add environnement variable
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' |  tr '[:upper:]' '[:lower:]' )" >> $GITHUB_ENV
+
+      # Build the image, one with the tag "latest" and the other with the current date
+      - name: Create image from repository
+        run: |
+          docker build --build-arg buildDate=${{ env.CURRENT_DATE }} -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:latest .
+          docker build --build-arg buildDate=${{ env.CURRENT_DATE }} -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} .
+
+      - name: Login to GitHub Container Registry
+        if: github.event.pull_request.merged == true || github.event_name != 'schedule' # The pull request gonna be merged or it's a scheduled task
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GitHub Container Registry
+        if: github.event.pull_request.merged == true || github.event_name != 'schedule' # The pull request gonna be merged or it's a scheduled task
+        run: |
+          docker push ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:latest
+          docker push ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }}
