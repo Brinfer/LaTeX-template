@@ -30,8 +30,8 @@ jobs:
       # Build the image, one with the tag "latest" and the other with the current date
       - name: Create image from repository
         run: |
-          docker build -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:latest .
-          docker build -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} .
+          docker build --build-arg buildDate=${{ env.CURRENT_DATE }} -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:latest .
+          docker build --build-arg buildDate=${{ env.CURRENT_DATE }} -t ghcr.io/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}:${{ env.CURRENT_DATE }} .
 
       - name: Login to GitHub Container Registry
         if: github.event.pull_request.merged == true # The pull request gonna be merged
