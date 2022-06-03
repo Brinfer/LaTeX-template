@@ -1,0 +1,43 @@
+name: Docker Build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - closed
+      - synchronize
+    # paths:
+    #   - "Dockerfile"
+
+env:
+  IMAGE_NAME: debian-texlive
+
+jobs:
+  docker_login_build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      # Had the variable "CURRENT_DATE" in the GitHub environnement to re-use it later
+      # Build the image, one with the tag "latest" and the other with the current date
+      - name: Create image from repository
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+          docker build -t ghcr.io/${{ github.actor }}/$IMAGE_NAME:latest .
+          docker build -t ghcr.io/${{ github.actor }}/$IMAGE_NAME:$CURRENT_DATE .
+
+      - name: Login to GitHub Container Registry
+        if: github.event.pull_request.merged == true # The pull request gonna be merged
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GitHub Container Registry
+        if: github.event.pull_request.merged == true # The pull request gonna be merged
+        run: |
+          docker push ghcr.io/${{ github.actor }}/$IMAGE_NAME:latest
+          docker push ghcr.io/${{ github.actor }}/$IMAGE_NAME:$CURRENT_DATE
