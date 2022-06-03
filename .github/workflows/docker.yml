@@ -8,11 +8,10 @@ on:
       - closed
       - review_requested
       - ready_for_review
-      - synchronize
     paths:
       - "Dockerfile"
   schedule:
-      - cron: "*/5 * * * *" # Execute every 6 month
+      - cron: "* * 1 */6 *" # Execute every 6 month at the 1
 
 env:
   IMAGE_NAME: debian-texlive
